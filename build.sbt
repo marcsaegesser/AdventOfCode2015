@@ -22,6 +22,8 @@ lazy val advent2018 = (project in file("."))
 
     libraryDependencies ++= Seq(
       "org.scalaz"       %% "scalaz-core"   % "7.2.27",
+      "org.tpolecat"     %% "atto-core"     % "0.6.5",
+      "org.tpolecat"     %% "atto-refined"  % "0.6.5",
       "org.scalatest"    %% "scalatest"     % "3.0.0"   % "test",
       "org.scalacheck"   %% "scalacheck"    % "1.13.4"  % "test"
     ),
