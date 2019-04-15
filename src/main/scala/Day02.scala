@@ -2,6 +2,12 @@ package advent
 
 object Day02 {
 
+  def day02(): Unit = {
+    val input = readFile(inputFile)
+    println(s"Day02.part1 = ${part1(input)}")
+    println(s"Day02.part2 = ${part2(input)}")
+  }
+
   def part1(input: List[Box]): Int =
     input
       .map(b => b.boxArea + b.minSideArea)
