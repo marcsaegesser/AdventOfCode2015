@@ -156,10 +156,10 @@ object Day07 {
 
   def parseComponent(s: String): Component =
     s match {
-      case constRegex(i1, o) => ConstGate(parseConnection(i1), parseWire(o))
-      case andRegex(i1, i2, o) => AndGate(parseConnection(i1), parseConnection(i2), parseWire(o))
-      case orRegex(i1, i2, o) => OrGate(parseConnection(i1), parseConnection(i2), parseWire(o))
-      case notRegex(i1, o) => NotGate(parseConnection(i1), parseWire(o))
+      case constRegex(i1, o)      => ConstGate(parseConnection(i1), parseWire(o))
+      case andRegex(i1, i2, o)    => AndGate(parseConnection(i1), parseConnection(i2), parseWire(o))
+      case orRegex(i1, i2, o)     => OrGate(parseConnection(i1), parseConnection(i2), parseWire(o))
+      case notRegex(i1, o)        => NotGate(parseConnection(i1), parseWire(o))
       case lshiftRegex(i1, i2, o) => LShiftGate(parseConnection(i1), parseConstant(i2), parseWire(o))
       case rshiftRegex(i1, i2, o) => RShiftGate(parseConnection(i1), parseConstant(i2), parseWire(o))
     }
