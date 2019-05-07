@@ -1,8 +1,5 @@
 package advent
 
-import scala.collection.parallel.immutable._
-
-
 object Day19 {
 
   def part1(puzzle: Puzzle): Int = {
@@ -14,15 +11,27 @@ object Day19 {
       a ++ applyRules(rules, s).map(p ++ _)
     }
 
-  def runIteration(rules: Rules, strings: ParSet[String]): ParSet[String] =
+  def runIteration(rules: Rules, strings: Set[String]): Set[String] =
     strings.flatMap(allReplacements(rules, _))
 
-  def untilFound(rules: Rules, search: String, string: String): (ParSet[String], Int) = {
-    def helper(i: Int, accum: ParSet[String]): (ParSet[String], Int) =
+  def untilFound(rules: Rules, search: String, string: String): (Set[String], Int) = {
+    def helper(i: Int, accum: Set[String]): (Set[String], Int) =
       if(accum.contains(search)) (accum, i)
       else                       helper(i+1, runIteration(rules, accum).filter(_.size <= search.size))
 
-    helper(0, ParSet(string))
+    helper(0, Set(string))
+  }
+
+  def untilFound2(rules: Rules, search: String, start: String) = {
+    def helper(i: Int, strings: Set[String]): Option[Int] = {
+      if(strings.contains(search)) Some(i)
+      else if(strings.isEmpty) None
+      else {
+        helper(i+1, allReplacements(rules, strings.head).filter(_.size <= search.size)).orElse(helper(i, strings.tail))
+      }
+    }
+
+    helper(1, allReplacements(rules, start))
   }
 
   def splits(input: String): List[(String, String)] = {
