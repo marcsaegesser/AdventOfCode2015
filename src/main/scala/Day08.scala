@@ -15,7 +15,7 @@ object Day08 {
     input.foldLeft(0) { case (a, s) => a + (encodeString(s).size - s.size) }
 
   def encodeString(input: String): String = {
-    input.foldLeft(StringBuilder.newBuilder) {
+    input.foldLeft(new StringBuilder()) {
       case (a, '\\') => a append ("""\\""")
       case (a, '"') => a append ("""\"""")
       case (a, c) => a append(c)

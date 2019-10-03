@@ -17,7 +17,7 @@ object Day17 {
         .map(_.size)
         .sorted
 
-    fs.prefixLength(_ == fs.head)
+    fs.segmentLength(_ == fs.head)
   }
 
   def findFills(input: Set[(Int, Int)], capacity: Int): List[Set[(Int, Int)]] = {

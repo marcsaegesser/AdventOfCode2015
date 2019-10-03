@@ -19,7 +19,7 @@ object Day10 {
 
   def seeAndSay(input: String): String = {
     findGroups(input)
-      .foldLeft(StringBuilder.newBuilder) { case (sb, s) =>
+      .foldLeft(new StringBuilder) { case (sb, s) =>
         sb.append(s"${s.size}${s.head}")
       }.toString
   }

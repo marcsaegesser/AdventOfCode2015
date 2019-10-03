@@ -51,7 +51,7 @@ object Day05 {
   }
 
   def meetsRepeatAroundProperty(s: String): Boolean =
-    s
+    s.toSeq
       .sliding(3)
       .exists(x => x.head == x.last)
 

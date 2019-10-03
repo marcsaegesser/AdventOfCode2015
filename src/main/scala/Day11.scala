@@ -1,5 +1,7 @@
 package advent
 
+import scala.collection.immutable.WrappedString
+
 object Day11 {
 
   def day11(): Unit = {
@@ -42,9 +44,9 @@ object Day11 {
     containsStraight(password) && !containsIOL(password) && containsPairs(password)
 
   def containsStraight(password: Password): Boolean = {
-    def isRun(s: String): Boolean = s(1) == s(0)+1 && s(2) == s(0) + 2
+    def isRun(s: WrappedString): Boolean = s(1) == s(0)+1 && s(2) == s(0) + 2
 
-    password.sliding(3).exists(isRun)
+    password.toSeq.sliding(3).exists(isRun)
   }
 
   def containsIOL(password: Password): Boolean =

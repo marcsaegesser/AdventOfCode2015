@@ -23,7 +23,7 @@ object Day13 {
   }
 
   def valueOfTable(rules: Rules, table: List[String]): Int = {
-    table.zip(Stream.continually(table).flatten.drop(1))
+    table.zip(LazyList.continually(table).flatten.drop(1))
       .map { case (n, a) =>  rules.getOrElse((n, a), 0) + rules.getOrElse((a, n), 0) }
       .sum
   }

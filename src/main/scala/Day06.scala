@@ -19,10 +19,10 @@ object Day06 {
     result.values.sum
   }
 
-  def coordsForRegion(start: Coord, end: Coord): Stream[Coord] =
+  def coordsForRegion(start: Coord, end: Coord): LazyList[Coord] =
     for {
-      r <- (start.row to end.row).toStream
-      c <- (start.col to end.col).toStream
+      r <- (start.row to end.row).to(LazyList)
+      c <- (start.col to end.col).to(LazyList)
     } yield Coord(r, c)
 
   def applyAction1(grid: Grid, action: Action): Grid = {
