@@ -7,17 +7,29 @@ object Day21 {
   case class Item(name: String, cost: Int, damage: Int, armor: Int)
 
   def part1(boss: Player): Int = {
-    val ps = for {
+    generatePlayersFromStore
+      .filter { case (c, p) => player1Wins(p, boss) }
+      .sortBy(_._1)
+      .head
+      ._1
+  }
+
+  def part2(boss: Player): Int = {
+    generatePlayersFromStore
+      .filterNot { case (c, p) => player1Wins(p, boss) }
+      .sortBy(_._1)
+      .reverse
+      .head
+      ._1
+  }
+
+  def generatePlayersFromStore: List[(Int, Player)] =
+    for {
       w <- weapons
       a <- armor
       r <- ringChoices
     } yield (w.cost+a.cost+r.cost, Player(100, w.damage+a.damage+r.damage, w.armor+a.armor+r.armor))
 
-    ps.filter { case (c, p) => player1Wins(p, boss) }
-      .sortBy(_._1)
-      .head
-      ._1
-  }
 
   def turnsToWin(p1: Player, p2: Player): Int = {
     val d = Math.max(p1.damage - p2.armor, 1)
