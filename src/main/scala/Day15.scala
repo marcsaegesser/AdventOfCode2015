@@ -24,15 +24,47 @@ object Day15 {
     scoreRecipe(rs.head, ingredients)
   }
 
-  def recipesFrom(recipe: Recipe, ingredients: Ingredients): List[Recipe] = {
-    val next =
-      nextRecipes(recipe)
-        .map(r => (r, scoreRecipe(r, ingredients)))
+  def findFactors(ingredients: Ingredients): List[Recipe] = {
+    def next(rs: List[Recipe], n: Int): List[Recipe] = {
+      if(n == 100) rs.filter(r => countCalories(r, ingredients) == 500)
+      else {
+        val nextRs = rs.flatMap(r => nextRecipes(r)).collect { case r if countCalories(r, ingredients) <= 500 => r }
+        next(nextRs, n+1)
+      }
+    }
 
-    val (_, m) = next.maxBy(_._2)
-
-    next.collect { case (r, s) if s == m => r }
+    next(List(emptyRecipe(ingredients)), 0)
   }
+
+  // def solvePuzzle2(ingredients: Ingredients): Int = {
+  //   def next(rs: List[Recipe], n: Int): List[Recipe] = {
+  //     if(n == 100) rs.filter(r => countCalories(r, ingredients) == 500)
+  //     else {
+  //       val nextRs = rs.flatMap(r => nextRecipes(r)).map(r => (r, countCalories(r, ingredients)))
+  //       next(nextRs.collect { case (r, c) if c <= 500 => r }, n+1)
+  //     }
+  //   }
+
+  //   val rs = next(List(emptyRecipe(ingredients)), 0)
+  //   rs.map(r => scoreRecipe(r, ingredients)).max
+  // }
+
+  // def solvePuzzle2(ingredients: Ingredients, maxCalories: Int): Int = {
+  //   def next(accum: List[Recipe], rs: List[Recipe]): List[Recipe] = {
+  //     val nextRs = rs.flatMap(r => nextRecipes(r)).map(r => (r, scoreRecipe(r, ingredients), countCalories(r, ingredients)))
+  //     val (_, maxScore, _) = nextRs.maxBy(_._2)
+  //     val (_, _, minCalories) = nextRs.minBy(_._3)
+  //     if(minCalories > maxCalories) accum
+  //     else
+  //       next(
+  //         accum ++ nextRs.collect { case (r, s, c) if c == maxCalories => r },
+  //         nextRs.collect { case (r, s, _) if s == maxScore => r }
+  //       )
+  //   }
+
+  //   val rs = next(List.empty[Recipe], List(emptyRecipe(ingredients)))
+  //   rs.map(r => scoreRecipe(r, ingredients)).max
+  // }
 
  def scoreRecipe(recipe: Recipe, ingredients: Ingredients): Int = {
     val (sumC, sumD, sumF, sumT) =
@@ -50,6 +82,9 @@ object Day15 {
 
   def countIngredients(r: Recipe): Int =
     r.values.sum
+
+  def countCalories(r: Recipe, ingredients: Ingredients): Int =
+    r.keys.map(n => ingredients(n).calories).sum
 
   def nextRecipes(recipe: Recipe): List[Recipe] = {
     recipe.keys.toList.map { name =>

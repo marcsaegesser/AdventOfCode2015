@@ -17,3 +17,5 @@ tags
 .boot
 .ivy
 debian/changelog
+.bloop
+.metals
