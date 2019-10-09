@@ -1,5 +1,7 @@
 package advent
 
+// import scala.annotation.tailrec
+
 object Day19 {
 
   def part1(puzzle: Puzzle): Int = {
@@ -34,6 +36,41 @@ object Day19 {
     helper(1, allReplacements(rules, start))
   }
 
+  def part2(puzzle: Puzzle): Int = {
+    val invRules = reverseRules(puzzle.rules)
+
+    // @tailrec
+    def helper(i: Int, strings: Set[String]): Option[Int] = {
+      println(s"helper: $i - strings.size=${strings.size}")
+      if(strings.contains("e")) Some(i)
+      else if(strings.isEmpty) None
+      else {
+        // val nextStrings =
+        //   strings
+        //     .flatMap(s => allReplacements(invRules, s).filterNot(s => s.size > 1 && s.contains('e')))
+
+        // helper(i+1, nextStrings)
+        val nextStrings =
+          allReplacements(invRules, strings.head).filterNot(s => s.size > 1 && s.contains('e'))
+        helper(i+1, nextStrings).orElse(helper(i, strings.tail))
+      }
+    }
+
+    helper(0, Set(puzzle.medicine)).getOrElse(throw new Exception("No solution!"))
+  }
+
+  def untilFound3(rules: Rules, search: String, start: String) = {
+    def helper(i: Int, strings: Set[String]): Option[Int] = {
+      if(strings.contains(search)) Some(i)
+      else if(strings.isEmpty) None
+      else {
+        helper(i+1, allReplacements(rules, strings.head)).orElse(helper(i, strings.tail))
+      }
+    }
+
+    helper(1, allReplacements(rules, start))
+  }
+
   def splits(input: String): List[(String, String)] = {
     def helper(accum: List[(String, String)], p: String, s: String): List[(String, String)] =
       if(s.isEmpty) accum
@@ -47,6 +84,9 @@ object Day19 {
       if(input.startsWith(r)) a + input.replaceFirst(r, s)
       else                    a
     }
+
+  def reverseRules(rules: Rules): Rules =
+    rules.map(_.swap)
 
   type Rules = Set[(String, String)]
   case class Puzzle(rules: Rules, medicine: String)
